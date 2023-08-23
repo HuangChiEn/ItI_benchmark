@@ -22,7 +22,7 @@ def find_dataset_using_name(dataset_name):
         if name.lower() == target_dataset_name.lower() \
            and issubclass(cls, BaseDataset):
             dataset = cls
-            
+
     if dataset is None:
         raise ValueError("In %s.py, there should be a subclass of BaseDataset "
                          "with class name that matches %s in lowercase." %

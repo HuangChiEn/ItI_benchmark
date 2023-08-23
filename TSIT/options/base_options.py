@@ -42,7 +42,9 @@ class BaseOptions():
         parser.add_argument('--dataset_mode', type=str, default='xxx')
         parser.add_argument('--croot', type=str, default='/data1/dataset/xxx', help='content dataroot')
         parser.add_argument('--sroot', type=str, default='/data1/dataset/xxx', help='style dataroot')
-        
+        parser.add_argument('--c_domain', type=str, default='clear', help='content domain')
+        parser.add_argument('--s_domain', type=str, default='rainy', help='style domain')
+
         parser.add_argument('--serial_batches', action='store_true', help='if true, takes images in order to make batches, otherwise takes them randomly')
         parser.add_argument('--no_flip', action='store_true', help='if specified, do not flip the images for data argumentation')
         parser.add_argument('--nThreads', default=0, type=int, help='# threads for loading data')

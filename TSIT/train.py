@@ -26,16 +26,18 @@ iter_counter = IterationCounter(opt, len(dataloader))
 # create tool for visualization
 visualizer = Visualizer(opt)
 
+# total_epochs = opt.niter + opt.niter_decay
 for epoch in tqdm(iter_counter.training_epochs()):
     iter_counter.record_epoch_start(epoch)
+    # go through all mini-batch of data_ld
     for i, data_i in enumerate(tqdm(dataloader), start=iter_counter.epoch_iter):
         iter_counter.record_one_iteration()
-
+        
         # Training
         # train generator
         if i % opt.D_steps_per_G == 0:
             trainer.run_generator_one_step(data_i)
-
+        
         # train discriminator
         trainer.run_discriminator_one_step(data_i)
 

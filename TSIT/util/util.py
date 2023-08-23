@@ -119,9 +119,14 @@ def tensor2label(label_tensor, n_label, imtype=np.uint8, tile=False):
     return result
 
 
-def save_image(image_numpy, image_path, create_dir=False):
+def save_image(image_numpy, image_path, create_dir=False, save_dir=None):
     if create_dir:
         os.makedirs(os.path.dirname(image_path), exist_ok=True)
+    
+    if save_dir:
+        os.makedirs(save_dir, exist_ok=True)
+        image_path = os.path.join(save_dir, image_path)
+
     if len(image_numpy.shape) == 2:
         image_numpy = np.expand_dims(image_numpy, axis=2)
     if image_numpy.shape[2] == 1:
@@ -129,7 +134,7 @@ def save_image(image_numpy, image_path, create_dir=False):
     image_pil = Image.fromarray(image_numpy)
 
     # save to png
-    image_pil.save(image_path.replace('.jpg', '.png'))
+    image_pil.save(image_path)
 
 
 def mkdirs(paths):

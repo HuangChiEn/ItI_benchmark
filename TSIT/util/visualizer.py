@@ -1,5 +1,4 @@
 import os
-import ntpath
 import time
 from . import util
 from . import html
@@ -129,6 +128,33 @@ class Visualizer():
                 t = util.tensor2im(t, tile=tile)
             visuals[key] = t
         return visuals
+
+    # save image to the disk
+    def save_test_images(self, webpage, visuals, image_path, style_path=None):
+        def get_save_path(path_lst, tag=''):
+            # pil.save only take png file as input!
+            png_fn = os.path.basename(*path_lst).replace('.jpg', '.png')
+            tag = f"{tag}S_" if tag else tag
+            return tag+png_fn
+
+        visuals = self.convert_visuals_to_numpy(visuals)    
+        save_lst = webpage.get_image_dir().split(os.sep)
+        save_prefix = save_lst[ :save_lst.index('images') ]
+        
+        cnt_save_path = get_save_path(image_path)
+        if style_path:
+            fn_wo_ext = os.path.basename(*style_path).replace('.jpg', '')
+            style_save_path = get_save_path(image_path, tag=fn_wo_ext)
+        
+        for label, image_numpy in visuals.items():
+            if not (label in ['content', 'style', 'synthesized_image']):
+                raise RuntimeError(f"Unknown label type : {label} !")
+
+            save_dir = os.sep.join(save_prefix + [label])
+            save_path = style_save_path if style_path and label == "style" \
+                            else cnt_save_path
+
+            util.save_image(image_numpy, save_path, save_dir=save_dir)
 
     # save image to the disk
     def save_images(self, webpage, visuals, image_path):        

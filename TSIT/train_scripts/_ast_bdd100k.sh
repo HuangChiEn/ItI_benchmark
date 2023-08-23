@@ -2,13 +2,13 @@
 
 set -x
 
-NAME='ast_cloudy2sunnyweather'
+NAME='ast_bdd100k'
 TASK='AST'
-DATA='cloudy2sunnyweather'
-CROOT='/data1/dataset/WeatherGAN'
-SROOT='/data1/dataset/WeatherGAN'
+DATA='bdd100k'
+CROOT='/data1/dataset/bdd100k'
+SROOT=$CROOT
 CKPTROOT='./checkpoints'
-WORKER=4
+WORKER=0
 
 # if you want to change the default setup, modify the following cfg file : 
 # /data/joseph/wea_trfs_benchmark/TSIT/options/base_options.py
@@ -19,10 +19,12 @@ python train.py \
     --task $TASK \
     --gpu_ids 0 \
     --checkpoints_dir $CKPTROOT \
-    --batchSize 1 \
+    --batchSize 8 \
     --dataset_mode $DATA \
     --croot $CROOT \
     --sroot $SROOT \
+    --c_domain clear \
+    --s_domain rainy \
     --nThreads $WORKER \
     --no_pairing_check \
     --no_instance \
@@ -34,3 +36,5 @@ python train.py \
     --niter 200 \
     --lambda_vgg 1 \
     --lambda_feat 1
+
+# # no-pair chk to speedup ! # note this arg, we don't have instance! 

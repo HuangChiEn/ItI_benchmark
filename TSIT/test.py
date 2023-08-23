@@ -33,9 +33,9 @@ for i, data_i in enumerate(tqdm(dataloader)):
 
     generated = model(data_i, mode='inference')
 
-    img_path = data_i['cpath']
+    # yeah, it named bad! path is style_path, cpath is content_path!
+    img_path, style_path = data_i['cpath'], data_i['path']
     for b in range(generated.shape[0]):
-        # print(i, 'process image... %s' % img_path[b])
         if opt.show_input:
             if opt.task == 'SIS':
                 visuals = OrderedDict([('input_label', data_i['label'][b]),
@@ -47,6 +47,8 @@ for i, data_i in enumerate(tqdm(dataloader)):
                                        ('synthesized_image', generated[b])])
         else:
             visuals = OrderedDict([('synthesized_image', generated[b])])
-        visualizer.save_images(webpage, visuals, img_path[b:b + 1])
-
+        
+        visualizer.save_test_images(webpage, visuals, img_path[b:b + 1])  # , style_path[b:b+1]
+        
 webpage.save()
+os.rmdir(webpage.get_image_dir())
